@@ -905,17 +905,20 @@ Unless stated otherwise, it is unset.
 <p>A <span title=concept-request>request</span> has an associated
 <dfn title=concept-request-use-token-binding>use-token-binding flag</dfn>.
 Unless stated otherwise, it is unset.
-<p class="note no-backref"> This flag controls whether the User Agent will send the Token Binding Id for the origin to the server when it transmits the request.
+<p class="note no-backref"> This flag controls whether the User Agent will send the Token Binding
+Id for the origin to the server when it transmits the request.
 
 <p>A <span title=concept-request>request</span> has an associated
 <dfn title=concept-request-use-referred-token-binding>use-referred-token-binding flag</dfn>.
 Unless stated otherwise, it is unset.
 
-<p class="note no-backref"> This flag controls whether the User Agent will send the Token Binding Id used by the User Agent with the referring origin, in addition to the Token Binding Id used by the User Agent with the origin, when it transmits the request to the server.
+<p class="note no-backref"> This flag controls whether the User Agent will send the Token Binding
+Id used by the User Agent with the referring origin, in addition to the Token Binding Id used by
+the User Agent with the origin, when it transmits the request to the server.
 
 <p>A <span title=concept-request>request</span> has an associated
-<dfn title=concept-request-referred-token-binding-origin>referred-token-binding-origin</dfn>, which is a URL.
-Unless stated otherwise, it is unset.
+<dfn title=concept-request-referred-token-binding-origin>referred-token-binding-origin</dfn>,
+which is a URL. Unless stated otherwise, it is unset.
 
 <p>A <span title=concept-request>request</span> has an associated
 <dfn title=concept-request-cache-mode>cache mode</dfn>, which is
@@ -2979,21 +2982,30 @@ in addition to <span title=concept-http-fetch>HTTP fetch</span> above.
  to `<code title>GET</code>` and <var>request</var>'s <span title=concept-request-body>body</span>
  to null.
 
- <li><p>Let <var>useReferredTokenBinding</var> be the result of <span title=concept-header-parse>parsing</span>
- `<code title>Include-Referer-Token-Binding-ID</code>` in <var>actualResponse</var>'s
- <span title=concept-response-header-list>header list</span>.
- The value of this header is specified in <a href="https://tools.ietf.org/id/draft-ietf-tokbind-https-03.xml#rfc.section.3.3">section 3.3</a> of the Token Binding over HTTP spec.
- <p class="note no-backref">By setting the <code title>Include-Referer-Token-Binding-ID</code> header to <var>true</var>, the origin that sends a redirect response tells the User Agent to disclose the Token Binding Id used by the User Agent with that origin to the target origin.
+ <li><p>Let <var>useReferredTokenBinding</var> be the result of
+   <span title=concept-header-parse>parsing</span>
+   `<code title>Include-Referer-Token-Binding-ID</code>` in <var>actualResponse</var>'s
+   <span title=concept-response-header-list>header list</span>.
+   The value of this header is specified in
+   <a href="https://tools.ietf.org/id/draft-ietf-tokbind-https-03.xml#rfc.section.3.3">section 3.3</a>
+   of the Token Binding over HTTP spec.
+   <p class="note no-backref">By setting the <code title>Include-Referer-Token-Binding-ID</code>
+   header to <var>true</var>, the origin that sends a redirect response tells the User Agent to
+   disclose the Token Binding Id used by the User Agent with that origin to the target origin.
 
  <li><p>Clear the request's <var>use-referred-token-binding</var> flag.
- <li><p>If <var>useReferredTokenBinding</var> is <var>true</var>, and the request's <var>use-token-binding</var> flag is <var>true</var>, then perform the following substeps:
+ <li><p>If <var>useReferredTokenBinding</var> is <var>true</var>, and the request's
+   <var>use-token-binding</var> flag is <var>true</var>, then perform the following substeps:
 
    <ol>
      <li>Set the request's <var>use-referred-token-binding</var> flag to <var>true</var>
      <li>Set the request's <var>referred-token-binding-origin</var> the request's <var>origin</var>
    </ol>
 
-   <p class="note no-backref">By getting the <var>use-referred-token-binding</var> flag set for the subsequent request via an appropriate <code title>Include-Referer-Token-Binding-ID</code> header in its response, the referring origin is able to tell the User Agent to disclose to the target server the Token Binding Id used by the User Agent with the referring origin.
+   <p class="note no-backref">By getting the <var>use-referred-token-binding</var> flag set for
+   the subsequent request via an appropriate <code title>Include-Referer-Token-Binding-ID</code>
+   header in its response, the referring origin is able to tell the User Agent to disclose to the
+   target server the Token Binding Id used by the User Agent with the referring origin.
 
  <li><p>Append <var>locationURL</var> to <var>request</var>'s
  <span title=concept-request-url-list>url list</span>.
@@ -3170,25 +3182,52 @@ The <i title>credentials flag</i> is one too.
 
      <li><p>If the User Agent supports Token Binding,
        build an appropriate <code title="">Sec-Token-Binding</code> header by running these substeps:
-       <p class="note no-backref"> A <code title="">Sec-Token-Binding</code> header allows a server to bind cookies that it issues to a Token Binding Id, and to verify that cookies presented by the User Agent are bound to the correct Token Binding Id.
+       <p class="note no-backref"> A <code title="">Sec-Token-Binding</code> header allows a server
+       to bind cookies that it issues to a Token Binding Id, and to verify that cookies presented
+       by the User Agent are bound to the correct Token Binding Id.
 
        <ol>
-         <li>
-           <p>Set the <var>httpRequest</var>'s <var>use-token-binding</var> flag
+         <li><p>Set the <var>httpRequest</var>'s <var>use-token-binding</var> flag
          <li>Initialize <var>tokenBindingMessage</var> to <var>null</var>
-         <li>Let <var>providedTokenBindingId</var> be the result of looking up the Token Binding Id for the <var>httpRequest</var>'s <span title=concept-request-current-url>current url</span>.
-          <p class="note no-backref">A User Agent negotiates the use of Token Binding with a server when it sets up a TLS connection to that server, creating a Token Binding Id at the end of the negotiation. The Token Binding Id can then simply be looked up whenever needed. If the User Agent is unable to negotiate Token Binding with a server, it will not create a Token Binding Id. If the Token Binding Id for a server is deleted by a User Agent (e.g., as a result of some user action), the User Agent will need to re-establish a TLS connection to negotiate Token Binding and create a new Token Binding Id.
-          <li>If <var>providedTokenBindingId</var> is not <var>null</var>, then add a <code title="">provided_token_binding</code> to <var>tokenBindingMessage</var>.
-          <li>If the <var>httpRequest</var>'s <var>use-referred-token-binding</var> flag is true, then run these substeps:
+         <li>Let <var>providedTokenBindingId</var> be the result of looking up the Token Binding Id
+           for the <var>httpRequest</var>'s <span title=concept-request-current-url>current url</span>.
+          <p class="note no-backref">A User Agent negotiates the use of Token Binding with a server
+          when it sets up a TLS connection to that server, creating a Token Binding Id at the end
+          of the negotiation. The Token Binding Id can then simply be looked up whenever needed.
+          If the User Agent is unable to negotiate Token Binding with a server, it will not create
+          a Token Binding Id. If the Token Binding Id for a server is deleted by a User Agent
+          (e.g., as a result of some user action), the User Agent will need to re-establish a TLS
+          connection to negotiate Token Binding and create a new Token Binding Id.
+          <li>If <var>providedTokenBindingId</var> is not <var>null</var>, then add a
+            <code title="">provided_token_binding</code> to <var>tokenBindingMessage</var>.
+          <li>If the <var>httpRequest</var>'s <var>use-referred-token-binding</var> flag is true,
+            then run these substeps:
           <ol>
-            <li>Let <var>referredTokenBindingId</var> be the result of looking up the Token Binding Id for the <var>httpRequest</var>'s <var>referred-token-binding-origin</var>.
-            <p class="note no-backref">A server indicates that it want to use a Referred Token Binding when doing a redirect to another server, or when code from that server's origin executes in the User Agent.  The User Agent would have negotiated the use of Token Binding with that server when it set up the TLS connection to that server, creating a Token Binding Id at the end of the negotiation. This Token Binding Id can then simply be looked up whenever needed. If the Token Binding Id for the server is deleted by a User Agent (e.g., as a result of some user action), the User Agent will need to re-establish a TLS connection to negotiate Token Binding and create a new Token Binding Id.
-            <li>If <var>referredTokenBindingId</var> is different from <var>providedTokenBindingId</var>, then add <var>referredTokenBindingId</var> as a <code title="">referred_token_binding</code> to <var>tokenBindingMessage</var>.
+            <li>Let <var>referredTokenBindingId</var> be the result of looking up the Token
+              Binding Id for the <var>httpRequest</var>'s <var>referred-token-binding-origin</var>.
+              <p class="note no-backref">A server indicates that it want to use a Referred Token
+              Binding when doing a redirect to another server, or when code from that server's
+              origin executes in the User Agent.  The User Agent would have negotiated the use of
+              Token Binding with that server when it set up the TLS connection to that server,
+              creating a Token Binding Id at the end of the negotiation. This Token Binding Id can
+              then simply be looked up whenever needed. If the Token Binding Id for the server is
+              deleted by a User Agent (e.g., as a result of some user action), the User Agent will
+              need to re-establish a TLS connection to negotiate Token Binding and create a new
+              Token Binding Id.
+            <li>If <var>referredTokenBindingId</var> is different from <var>providedTokenBindingId</var>,
+              then add <var>referredTokenBindingId</var> as a <code title="">referred_token_binding</code>
+              to <var>tokenBindingMessage</var>.
           </ol>
-          <li>If <var>tokenBindingMessage</var> is not <var>null</var>, append a <code title="">Sec-Token-Binding</code> header to <var>httpRequest</var>'s
-              <span title=concept-request-header-list>header list</span>.
-              <p>The value of the <code title="">Sec-Token-Binding</code> header is a <var>Token Binding Message</var> as specified in <a href="https://tools.ietf.org/id/draft-ietf-tokbind-https-03.xml#rfc.section.3">section 2</a> of the Token Binding over HTTP spec.
-              The value of a Token Binding Message is specified in <a href="https://tools.ietf.org/id/draft-ietf-tokbind-protocol-06.xml#rfc.section.3">section 3</a> of the Token Binding Protocol spec.
+          <li>If <var>tokenBindingMessage</var> is not <var>null</var>, append a
+            <code title="">Sec-Token-Binding</code> header to <var>httpRequest</var>'s
+            <span title=concept-request-header-list>header list</span>.
+            <p>The value of the <code title="">Sec-Token-Binding</code> header is a
+            <var>Token Binding Message</var> as specified in
+            <a href="https://tools.ietf.org/id/draft-ietf-tokbind-https-03.xml#rfc.section.3">section 2</a>
+            of the Token Binding over HTTP spec.
+            The value of a Token Binding Message is specified in
+            <a href="https://tools.ietf.org/id/draft-ietf-tokbind-protocol-06.xml#rfc.section.3">section 3</a>
+            of the Token Binding Protocol spec.
        </ol>
     </ol>
 
@@ -4642,7 +4681,9 @@ constructor must run these steps:
  <var>credentials</var>.
 
  <li><p>If <var>init</var>'s <code title>useReferredTokenBinding</code> member is present, set
-   <var>request</var>'s <span title=concept-request-use-referred-token-binding>use-referred-token-binding flag</span> to it. Also, set <var>request</var>'s <span title=concept-request-referred-token-binding-origin>referred-token-binding-origin</span> to <var>origin</var>.
+   <var>request</var>'s <span title=concept-request-use-referred-token-binding>use-referred-token-binding flag</span>
+   to it. Also, set <var>request</var>'s <span title=concept-request-referred-token-binding-origin>referred-token-binding-origin</span>
+   to <var>origin</var>.
 
  <li><p>If <var>init</var>'s <code title>cache</code> member is present, set
  <var>request</var>'s <span title=concept-request-cache-mode>cache mode</span> to
@@ -4825,8 +4866,8 @@ getter must return <span title=concept-Request-request>request</span>'s
 getter must return <span title=concept-Request-request>request</span>'s
 <span title=concept-request-credentials-mode>credentials mode</span>.
 
-<p>The <dfn title=dom-Request-use-referred-token-binding><code>useReferredTokenBinding</code></dfn> attribute's
-getter must return <span title=concept-Request-request>request</span>'s
+<p>The <dfn title=dom-Request-use-referred-token-binding><code>useReferredTokenBinding</code></dfn>
+attribute's getter must return <span title=concept-Request-request>request</span>'s
 <span title=concept-request-use-referred-token-binding>use-referred-token-binding flag</span>.
 
 <p>The <dfn title=dom-Request-cache><code>cache</code></dfn> attribute's getter must
